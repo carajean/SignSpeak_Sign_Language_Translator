@@ -1,71 +1,47 @@
-body{
-  font-family: "Helvetica Neue", "sans-serif";
+body {
+  font-family: 'Helvetica Neue', 'sans-serif';
   margin: 0;
   padding: 0;
 }
 
-#video{
+header {
+  height: 150px;
+  background-image: url('SignSpeakASL.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgb(225, 242, 236);
+  color: rgb(80, 65, 182);
+  border-bottom: solid rgb(80, 65, 182) 5px;
+}
+
+.split-left,
+.split-right {
+  margin-top: 155px;
+}
+
+#video {
+  margin-top: 150px;
   transform: rotateY(180deg);
-  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-  -moz-transform:rotateY(180deg); /* Firefox */
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
   position: absolute;
   left: 32.5%;
-  top:5%;
+  top: 5%;
   z-index: 10;
-  background-color: black;
-  border: 8px solid black;
+  background-image: radial-gradient(
+    circle,
+    rgb(153, 169, 189),
+    rgb(104, 118, 135),
+    rgb(68, 71, 77)
+  );
+  border: 5px solid rgb(80, 65, 182);
   border-radius: 5px;
-}
-
-#status{
-  width: 300px;
-  height: 50px;
-  background: red;
-  position: absolute;
-  z-index: 30;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  border:7px solid black;
-  border-top: none;
-  text-align: center;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-#status p{
-  color: white;
-  font-weight: bold;
-}
-
-h1 {
-  font-family: 'Baloo Bhaina', "Helvetica Neue", "sans-serif";
-  font-size: 80px;
-  font-weight: bold;
-  line-height: 100%;
-}
-
-h1 .subtext {
-  font-family: "Helvetica Neue", "sans-serif";
-  font-size:14px;
-  font-weight: normal;
-  line-height: 16px;
-}
-
-.intro-steps {
-  font-size: 30px;
-}
-
-#add-word{
-  border:1px solid #333;
-  padding: 10px;
-  font-size: 12px;
 }
 
 .split-left {
   text-align: center;
   height: 100%;
-  left:0;
+  left: 0;
   width: 39.75%;
   position: fixed;
   z-index: 1;
@@ -73,14 +49,13 @@ h1 .subtext {
   overflow-x: hidden;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-right: 5px solid black;
-  background:tomato;
+  border-right: 5px solid rgb(80, 65, 182);
+  background: rgb(153, 198, 182);
 }
 
-.split-left h1{
+.split-left h1 {
   color: white;
 }
-
 
 .split-right {
   height: 100%;
@@ -90,10 +65,54 @@ h1 .subtext {
   top: 0;
   overflow-x: hidden;
   padding-top: 20px;
-  right:0;
+  right: 0;
   padding-bottom: 20px;
-  border-left: 5px solid black;
   background: white;
+}
+
+#status {
+  width: 300px;
+  height: 50px;
+  background: red;
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid black;
+  border-top: none;
+  text-align: center;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#status p {
+  color: white;
+  font-weight: bold;
+}
+
+h1 {
+  font-family: 'Baloo Bhaina', 'Helvetica Neue', 'sans-serif';
+  font-size: 80px;
+  font-weight: bold;
+  line-height: 100%;
+}
+
+h1 .subtext {
+  font-family: 'Helvetica Neue', 'sans-serif';
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 16px;
+}
+
+.intro-steps {
+  font-size: 30px;
+}
+
+#add-word {
+  border: 1px solid #333;
+  padding: 10px;
+  font-size: 12px;
 }
 
 /* If you want the content centered horizontally and vertically */
@@ -103,13 +122,12 @@ h1 .subtext {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  width:75%;
+  width: 75%;
 }
 
 #info {
   margin-bottom: 30px;
 }
-
 
 #loader,
 #loader:before,
@@ -172,69 +190,14 @@ h1 .subtext {
   }
 }
 
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Header */
-.modal-header {
-    padding: 2px 16px;
-    background-color: deepskyblue;
-    color: white;
-}
-
-/* Modal Body */
-.modal-body {padding: 2px 16px;}
-
-/* Modal Footer */
-.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}
-
-/* Modal Content */
-.modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border: 1px solid #888;
-    width: 40%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    animation-name: animatetop;
-    animation-duration: 0.4s;
-    top: 10%;
-    text-align: center;
-}
-
 /* Add Animation */
 @keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 10%; opacity: 1}
-}
-
-/* The Close Button */
-#close-modal {
-    color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-#close-modal:hover,
-#close-modal:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 10%;
+    opacity: 1;
+  }
 }

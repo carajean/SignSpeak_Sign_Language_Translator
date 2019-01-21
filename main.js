@@ -1,19 +1,17 @@
 import { KNNImageClassifier } from 'deeplearn-knn-image-classifier';
 import * as dl from 'deeplearn';
+import TextToSpeech from './SpeechComponents/TextToSpeech.js';
 
-// Webcam Image size. Must be 227.
-const IMAGE_SIZE = 227;
-// K value for KNN
-const TOPK = 10;
-
+const IMAGE_SIZE = 227; // webcam image size; must be 227
+const TOPK = 10; // K value for KNN
 const predictionThreshold = 0.98;
 
-var words = ['ready', 'hello', 'finish', 'other'];
-var endWords = ['finish'];
+let words = ['ready', 'hello', 'how-are', 'you', 'finish', 'other'];
+export let endWords = ['finish'];
 
 class Main {
   constructor() {
-    // Initiate variables
+    // initiate variables
     this.infoTexts = [];
     this.training = -1; // when no class is being trained
     this.videoPlaying = false;
@@ -69,7 +67,7 @@ class Main {
   }
 
   createPredictBtn() {
-    var div = document.getElementById('action-btn');
+    let div = document.getElementById('action-btn');
     div.innerHTML = '';
     const predButton = document.createElement('button');
 
@@ -100,7 +98,7 @@ class Main {
   }
 
   createTrainingBtn() {
-    var div = document.getElementById('action-btn');
+    let div = document.getElementById('action-btn');
     div.innerHTML = '';
 
     const trainButton = document.createElement('button');
@@ -160,7 +158,7 @@ class Main {
   }
 
   updateExampleCount() {
-    var p = document.getElementById('count');
+    let p = document.getElementById('count');
     p.innerText = `Training: ${words.length} words`;
   }
 
@@ -227,7 +225,7 @@ class Main {
     if (this.timer) {
       this.stopTraining();
     }
-    var promise = this.video.play();
+    let promise = this.video.play();
 
     if (promise !== undefined) {
       promise
@@ -251,11 +249,10 @@ class Main {
     if (this.videoPlaying) {
       // Get image data from video element
       const image = dl.fromPixels(this.video);
-      let word = words[this.training].toUpperCase();
       if (this.training !== -1) {
         // Add current image to classifier
         this.knn.addImage(image, this.training);
-        console.log(`trained: ${word}`);
+        console.log(`trained: ${words[this.training]}`);
       }
       const exampleCount = this.knn.getClassExampleCount();
       if (Math.max(...exampleCount) > 0) {
@@ -330,232 +327,8 @@ class Main {
   }
 }
 
-class TextToSpeech {
-  constructor() {
-    this.synth = window.speechSynthesis;
-    this.voices = [];
-    this.pitch = 1.0;
-    this.rate = 0.9;
-
-    this.textLine = document.getElementById('text');
-    this.ansText = document.getElementById('answerText');
-    this.loader = document.getElementById('loader');
-
-    this.selectedVoice = 48; // this is Google-US en. Can set voice and language of choice
-
-    this.currentPredictedWords = [];
-    this.waitTimeForQuery = 5000;
-
-    this.synth.onvoiceschanged = () => {
-      this.populateVoiceList();
-    };
-  }
-
-  populateVoiceList() {
-    if (typeof speechSynthesis === 'undefined') {
-      console.log('no synth');
-      return;
-    }
-    this.voices = this.synth.getVoices();
-
-    if (this.voices.indexOf(this.selectedVoice) > 0) {
-      console.log(
-        `${this.voices[this.selectedVoice].name}:${
-          this.voices[this.selectedVoice].lang
-        }`
-      );
-    } else {
-      //alert("Selected voice for speech did not load or does not exist.\nCheck Internet Connection")
-    }
-  }
-
-  clearPara(queryDetected) {
-    this.textLine.innerText = '';
-    this.ansText.innerText = '';
-    if (queryDetected) {
-      this.loader.style.display = 'block';
-    } else {
-      this.loader.style.display = 'none';
-      this.ansText.innerText = 'No query detected';
-      main.previousPrediction = -1;
-    }
-    this.currentPredictedWords = [];
-  }
-
-  speak(word) {
-    if (word == 'alexa') {
-      console.log('clear para');
-      this.clearPara(true);
-
-      setTimeout(() => {
-        // if no query detected after alexa is signed
-        if (this.currentPredictedWords.length == 1) {
-          this.clearPara(false);
-        }
-      }, this.waitTimeForQuery);
-    }
-
-    if (word != 'ready' && this.currentPredictedWords.length == 0) {
-      console.log('first word should be ready');
-      console.log(word);
-      return;
-    }
-
-    // if(endWords.includes(word) && this.currentPredictedWords.length == 1 && (word != "hello" && word != "bye")){
-    //   console.log("end word detected early")
-    //   console.log(word)
-    //   return;
-    // }
-
-    if (this.currentPredictedWords.includes(word)) {
-      // prevent word from being detected repeatedly in phrase
-      console.log('word already been detected in current phrase');
-      return;
-    }
-
-    this.currentPredictedWords.push(word);
-
-    this.textLine.innerText += ' ' + word;
-
-    var utterThis = new SpeechSynthesisUtterance(word);
-
-    utterThis.onend = evt => {
-      if (endWords.includes(word)) {
-        //if last word is one of end words start listening for transcribing
-        console.log('this was the last word');
-
-        main.setStatusText('Status: Waiting for Response');
-
-        let stt = new SpeechToText();
-      }
-    };
-
-    utterThis.onerror = evt => {
-      console.log('Error speaking');
-    };
-
-    utterThis.voice = this.voices[this.selectedVoice];
-
-    utterThis.pitch = this.pitch;
-    utterThis.rate = this.rate;
-
-    this.synth.speak(utterThis);
-  }
-}
-
-class SpeechToText {
-  constructor() {
-    this.interimTextLine = document.getElementById('interimText');
-    this.textLine = document.getElementById('answerText');
-    this.loader = document.getElementById('loader');
-    this.finalTranscript = '';
-    this.recognizing = false;
-
-    this.recognition = new webkitSpeechRecognition();
-
-    this.recognition.continuous = true;
-    this.recognition.interimResults = true;
-
-    this.recognition.lang = 'en-US';
-
-    this.cutOffTime = 15000; // cut off speech to text after
-
-    this.recognition.onstart = () => {
-      this.recognizing = true;
-      console.log('started recognizing');
-      main.setStatusText('Status: Transcribing');
-    };
-
-    this.recognition.onerror = evt => {
-      console.log(evt + ' recogn error');
-    };
-
-    this.recognition.onend = () => {
-      console.log('stopped recognizing');
-      if (this.finalTranscript.length == 0) {
-        this.type('No response detected');
-      }
-      this.recognizing = false;
-
-      main.setStatusText('Status: Finished Transcribing');
-      // restart prediction after a pause
-      setTimeout(() => {
-        main.startPredicting();
-      }, 1000);
-    };
-
-    this.recognition.onresult = event => {
-      var interim_transcript = '';
-      if (typeof event.results == 'undefined') {
-        return;
-      }
-
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          this.finalTranscript += event.results[i][0].transcript;
-        } else {
-          interim_transcript += event.results[i][0].transcript;
-        }
-      }
-
-      this.interimType(interim_transcript);
-      this.type(this.finalTranscript);
-    };
-
-    setTimeout(() => {
-      this.startListening();
-    }, 0);
-
-    setTimeout(() => {
-      this.stopListening();
-    }, this.cutOffTime);
-  }
-
-  startListening() {
-    if (this.recognizing) {
-      this.recognition.stop();
-      return;
-    }
-
-    console.log('listening');
-
-    main.pausePredicting();
-
-    this.recognition.start();
-  }
-
-  stopListening() {
-    console.log('STOP LISTENING');
-    if (this.recognizing) {
-      console.log('stop speech to text');
-      this.recognition.stop();
-
-      //restart predicting
-      main.startPredicting();
-      return;
-    }
-  }
-
-  interimType(text) {
-    this.loader.style.display = 'none';
-    this.interimTextLine.innerText = text;
-  }
-
-  type(text) {
-    this.loader.style.display = 'none';
-    this.textLine.innerText = text;
-  }
-}
-
-var main = null;
+let main = null;
 
 window.addEventListener('load', () => {
-  var ua = navigator.userAgent.toLowerCase();
-
-  if (!(ua.indexOf('chrome') != -1 || ua.indexOf('firefox') != -1)) {
-    alert('Please visit in the latest Chrome or Firefox');
-    return;
-  }
-
   main = new Main();
 });
