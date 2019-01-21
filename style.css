@@ -1,17 +1,23 @@
 body {
-  font-family: 'Helvetica Neue', 'sans-serif';
+  font-family: 'Open Sans', sans-serif;
   margin: 0;
   padding: 0;
 }
 
 header {
   height: 150px;
-  background-image: url('SignSpeakASL.png');
-  background-repeat: no-repeat;
-  background-position: center;
+  padding: 0 60px;
   background-color: rgb(225, 242, 236);
   color: rgb(80, 65, 182);
   border-bottom: solid rgb(80, 65, 182) 5px;
+}
+
+#title {
+  margin: 0;
+  float: left;
+  position: relative;
+  top: 45px;
+  margin-right: 50px;
 }
 
 .split-left,
@@ -67,7 +73,7 @@ header {
   padding-top: 20px;
   right: 0;
   padding-bottom: 20px;
-  background: white;
+  background-color: rgb(225, 242, 236);
 }
 
 #status {
@@ -92,7 +98,7 @@ header {
 }
 
 h1 {
-  font-family: 'Baloo Bhaina', 'Helvetica Neue', 'sans-serif';
+  font-family: 'Audiowide', cursive;
   font-size: 80px;
   font-weight: bold;
   line-height: 100%;
@@ -118,7 +124,7 @@ h1 .subtext {
 /* If you want the content centered horizontally and vertically */
 .centered {
   position: absolute;
-  top: 50%;
+  top: 220px;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
