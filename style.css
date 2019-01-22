@@ -110,13 +110,11 @@ header {
 }
 
 #video {
-  margin-top: 150px;
+  margin: auto;
+  margin-top: 80px;
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
-  position: fixed;
-  right: 0.9%;
-  top: 12%;
   height: 400px;
   width: auto;
   z-index: 10;
@@ -159,11 +157,12 @@ header {
   position: fixed;
   z-index: 1;
   top: 0;
+  right: 0;
   overflow-x: hidden;
   padding-top: 20px;
-  right: 0;
-  padding-bottom: 20px;
   background-color: rgb(225, 242, 236);
+  display: flex;
+  justify-content: center;
 }
 
 #status {
