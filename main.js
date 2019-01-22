@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-alert */
 import { KNNImageClassifier } from 'deeplearn-knn-image-classifier';
 import * as dl from 'deeplearn';
 
@@ -5,7 +7,7 @@ const IMAGE_SIZE = 227; // webcam image size; must be 227
 const TOPK = 10; // K value for KNN
 const predictionThreshold = 0.98;
 
-let words = ['ready', 'hello', 'how-are', 'you', 'finish', 'other'];
+let words = ['ready', 'hello', 'how-are-you', 'finish', 'other'];
 let endWords = ['finish'];
 
 class Main {
@@ -35,11 +37,12 @@ class Main {
     this.left = document.getElementById('split-left');
     this.main = document.getElementById('main');
     this.statusText = document.getElementById('status-text');
+    this.signPhrase = document.getElementById('signPhrase');
 
     this.video.style.display = 'none';
     this.video.addEventListener('mousedown', () => {
       // click on video to go back to training buttons
-      this.main.pausePredicting();
+      main.pausePredicting();
       this.trainingListDiv.style.display = 'block';
     });
 
@@ -108,7 +111,6 @@ class Main {
   }
 
   startWebcam() {
-    // Setup webcam
     navigator.mediaDevices
       .getUserMedia({ video: { facingMode: 'user' }, audio: false })
       .then(stream => {
@@ -271,15 +273,9 @@ class Main {
           alert(`More training please!`);
           return;
         }
-
         this.trainingListDiv.style.display = 'none';
         this.textLine.classList.remove('intro-steps');
-        this.textLine.innerText = 'Start signing';
         this.startPredicting();
-      } else {
-        alert(
-          `You haven't added any examples yet.\n\nPress and hold on the "Add Example" button next to each word while performing the sign in front of the webcam.`
-        );
       }
     });
   }
@@ -289,16 +285,17 @@ class Main {
     if (this.timer) {
       this.stopTraining();
     }
-    document.getElementById('status').style.background = 'deepskyblue';
-    this.setStatusText('Status: Ready!');
+    this.textLine.innerText = '';
+    this.setStatusText('Start signing!');
     this.video.play();
     this.pred = requestAnimationFrame(this.predict.bind(this));
   }
 
   pausePredicting() {
     console.log('interpreter paused');
-    this.setStatusText('Status: Paused Predicting');
+    this.setStatusText('Paused');
     cancelAnimationFrame(this.pred);
+    this.train();
   }
 
   predict() {
@@ -335,7 +332,6 @@ class Main {
         }
       }
     }
-
     this.pred = requestAnimationFrame(this.predict.bind(this));
   }
   setStatusText(status) {
@@ -353,13 +349,14 @@ class TextToSpeech {
     this.rate = 0.9;
 
     this.textLine = document.getElementById('text');
+    this.signPhrase = document.getElementById('signPhrase');
     this.ansText = document.getElementById('answerText');
     this.loader = document.getElementById('loader');
 
     this.selectedVoice = 48; // this is Google-US en. Can set voice and language of choice
 
     this.currentPredictedWords = [];
-    this.waitTimeForQuery = 5000;
+    this.waitTimeForQuery = 3000;
 
     this.synth.onvoiceschanged = () => {
       this.populateVoiceList();
@@ -385,34 +382,34 @@ class TextToSpeech {
   }
 
   clearPara(queryDetected) {
-    this.textLine.innerText = '';
+    this.signPhrase.innerText = '';
     this.ansText.innerText = '';
     if (queryDetected) {
       this.loader.style.display = 'block';
+      this.ansText.innerText = '';
     } else {
       this.loader.style.display = 'none';
-      this.ansText.innerText = 'No query detected';
+      this.ansText.innerText = '(No query detected)';
       this.main.previousPrediction = -1;
     }
     this.currentPredictedWords = [];
   }
 
   speak(word) {
-    if (word == 'alexa') {
+    if (word === 'ready') {
       console.log('clear para');
       this.clearPara(true);
 
       setTimeout(() => {
-        // if no query detected after alexa is signed
-        if (this.currentPredictedWords.length == 1) {
+        // if no query detected after ready is signed
+        if (this.currentPredictedWords.length === 1) {
           this.clearPara(false);
         }
       }, this.waitTimeForQuery);
     }
 
-    if (word != 'ready' && this.currentPredictedWords.length == 0) {
-      console.log('first word should be ready');
-      console.log(word);
+    if (word !== 'ready' && this.currentPredictedWords.length === 0) {
+      console.log('first word should be READY');
       return;
     }
 
@@ -424,31 +421,30 @@ class TextToSpeech {
 
     this.currentPredictedWords.push(word);
 
-    this.textLine.innerText += ' ' + word;
+    this.signPhrase.innerText += ' ' + word;
 
-    let utterThis = new SpeechSynthesisUtterance(word);
+    if (word === 'finish' && this.currentPredictedWords.length > 1) {
+      let phrase = this.currentPredictedWords
+        .splice(1, this.currentPredictedWords.length - 2)
+        .join(' ');
+      let utterThis = new SpeechSynthesisUtterance(phrase);
+      utterThis.onend = evt => {
+        if (endWords.includes(word)) {
+          //if last word is one of end words start listening for transcribing
+          main.setStatusText('Listening...');
 
-    utterThis.onend = evt => {
-      if (endWords.includes(word)) {
-        //if last word is one of end words start listening for transcribing
-        console.log('this was the last word');
-
-        main.setStatusText('Status: Waiting for Response');
-
-        let stt = new SpeechToText();
-      }
-    };
-
-    utterThis.onerror = evt => {
-      console.log('Error speaking');
-    };
-
-    utterThis.voice = this.voices[this.selectedVoice];
-
-    utterThis.pitch = this.pitch;
-    utterThis.rate = this.rate;
-
-    this.synth.speak(utterThis);
+          let stt = new SpeechToText();
+        }
+      };
+      utterThis.onerror = evt => {
+        console.log('Error speaking');
+      };
+      utterThis.voice = this.voices[this.selectedVoice];
+      utterThis.pitch = this.pitch;
+      utterThis.rate = this.rate;
+      this.signPhrase.innerText = '';
+      this.synth.speak(utterThis);
+    }
   }
 }
 
@@ -461,32 +457,28 @@ class SpeechToText {
     this.recognizing = false;
 
     this.recognition = new webkitSpeechRecognition();
-
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
-
     this.recognition.lang = 'en-US';
 
-    this.cutOffTime = 15000; // cut off speech to text after
+    this.cutOffTime = 5000; // cut off speech to text after
 
     this.recognition.onstart = () => {
       this.recognizing = true;
-      console.log('started recognizing');
-      main.setStatusText('Status: Transcribing');
+      main.setStatusText('Listening');
     };
 
     this.recognition.onerror = evt => {
-      console.log(evt + ' recogn error');
+      console.log(`reconition error: ${evt}`);
     };
 
     this.recognition.onend = () => {
       console.log('stopped recognizing');
-      if (this.finalTranscript.length == 0) {
-        this.type('No response detected');
+      if (this.finalTranscript.length === 0) {
+        this.type('(No response detected)');
       }
       this.recognizing = false;
 
-      main.setStatusText('Status: Finished Transcribing');
       // restart prediction after a pause
       setTimeout(() => {
         main.startPredicting();
@@ -495,7 +487,7 @@ class SpeechToText {
 
     this.recognition.onresult = event => {
       let interim_transcript = '';
-      if (typeof event.results == 'undefined') {
+      if (typeof event.results === 'undefined') {
         return;
       }
 
@@ -525,11 +517,8 @@ class SpeechToText {
       this.recognition.stop();
       return;
     }
-
     console.log('listening');
-
     main.pausePredicting();
-
     this.recognition.start();
   }
 

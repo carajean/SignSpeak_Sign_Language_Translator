@@ -9,7 +9,7 @@ span,
 button,
 input {
   font-size: 18pt;
-  color: rgb(0, 0, 96);
+  color: rgb(40, 40, 196);
 }
 
 button,
@@ -71,6 +71,7 @@ header {
   position: relative;
   top: 45px;
   margin-right: 50px;
+  color: rgb(40, 40, 196);
 }
 
 #split-left,
@@ -125,7 +126,7 @@ header {
     rgb(104, 118, 135),
     rgb(68, 71, 77)
   );
-  border: 5px solid rgb(80, 65, 182);
+  border: 5px solid rgb(40, 40, 196);
   border-radius: 5px;
 }
 
@@ -154,7 +155,7 @@ header {
 #split-right {
   height: 100%;
   width: 40%;
-  border-left: 5px solid rgb(80, 65, 182);
+  border-left: 5px solid rgb(40, 40, 196);
   position: fixed;
   z-index: 1;
   top: 0;
@@ -166,15 +167,15 @@ header {
 }
 
 #status {
-  width: 300px;
+  width: 250px;
   height: 50px;
-  background: red;
   position: absolute;
   z-index: 30;
-  top: 0;
-  left: 50%;
+  top: 20.5%;
+  left: 31%;
   transform: translateX(-50%);
-  border: 7px solid black;
+  border: 5px solid rgb(40, 40, 196);
+  background-color: purple;
   border-top: none;
   text-align: center;
   border-bottom-left-radius: 10px;
@@ -182,8 +183,10 @@ header {
 }
 
 #status p {
+  margin: 4px;
   color: white;
   font-weight: bold;
+  font-size: 22pt;
 }
 
 h1 {
@@ -208,7 +211,7 @@ h1 .subtext {
   width: 20%;
   float: left;
   margin-left: 300px;
-  border: 3px solid rgb(80, 65, 182);
+  border: 5px solid rgb(40, 40, 196);
   padding: 20px;
   border-radius: 35px;
   background-color: rgb(225, 242, 236);
@@ -232,17 +235,33 @@ input {
   text-align: left;
 }
 
+#signPhrase {
+  color: purple;
+  font-size: 36pt;
+}
+
+#interimText {
+  color: purple;
+  font-size: 36pt;
+}
+
+#answerText {
+  color: rgb(40, 40, 196);
+  font-size: 36pt;
+  font-weight: bold;
+}
+
 #loader,
 #loader:before,
 #loader:after {
-  background: #000000;
+  background: rgb(40, 40, 196);
   -webkit-animation: load1 1s infinite ease-in-out;
   animation: load1 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
 #loader {
-  color: #000000;
+  color: rgb(40, 40, 196);
   text-indent: -9999em;
   margin: 88px auto;
   position: relative;
