@@ -4,6 +4,7 @@ My original vision for this project was to build upon Shekit's work of making a 
 
 Here are two open-source American Sign Language database that I was unable to integrate into this project:
 http://www-i6.informatik.rwth-aachen.de/~dreuw/database-rwth-boston-50.php
+
 http://www-i6.informatik.rwth-aachen.de/~dreuw/database-rwth-boston-104.php
 
 I am new to TensorFlow & machine learning, so deciphering the database's python scripts was beyond me in the scope of this short project. I learned that in TensorFlow.js, not all models share functionality (ie, KNNImageClassifier cannot load/save). I attempted several workarounds but was unsuccessful.
