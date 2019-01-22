@@ -48,6 +48,8 @@ class Main {
     this.video.addEventListener('mousedown', () => {
       main.pausePredicting();
       this.trainingListDiv.style.display = 'block';
+      this.textLine.style.display = 'block';
+      this.count.style.display = 'block';
     });
 
     // add word to training example set

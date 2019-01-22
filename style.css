@@ -82,7 +82,7 @@ button,
 
 button:hover,
 #addWordBtn:hover {
-  background-color: rgb(0, 30, 150);
+  background-color: rgb(40, 40, 196);
 }
 
 #predBtn {
@@ -96,8 +96,8 @@ header {
   height: 152px;
   padding: 0 5%;
   background-color: rgb(225, 242, 236);
-  color: rgb(80, 65, 182);
-  border-bottom: solid rgb(80, 65, 182) 5px;
+  color: rgb(40, 40, 196);
+  border-bottom: solid rgb(40, 40, 196) 5px;
 }
 
 #title {
