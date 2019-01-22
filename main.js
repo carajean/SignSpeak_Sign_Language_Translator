@@ -360,38 +360,14 @@ class TextToSpeech {
     this.voices = [];
     this.pitch = 1.0;
     this.rate = 0.9;
+    this.selectedVoice = 48;
+    this.currentPredictedWords = [];
+    this.waitTimeForQuery = 5000;
 
     this.textLine = document.getElementById('text');
     this.signPhrase = document.getElementById('signPhrase');
     this.ansText = document.getElementById('answerText');
     this.loader = document.getElementById('loader');
-
-    this.selectedVoice = 48; // this is Google-US en. Can set voice and language of choice
-
-    this.currentPredictedWords = [];
-    this.waitTimeForQuery = 5000;
-
-    this.synth.onvoiceschanged = () => {
-      this.populateVoiceList();
-    };
-  }
-
-  populateVoiceList() {
-    if (typeof speechSynthesis === 'undefined') {
-      console.log('no synth');
-      return;
-    }
-    this.voices = this.synth.getVoices();
-
-    if (this.voices.indexOf(this.selectedVoice) > 0) {
-      console.log(
-        `${this.voices[this.selectedVoice].name}:${
-          this.voices[this.selectedVoice].lang
-        }`
-      );
-    } else {
-      //alert("Selected voice for speech did not load or does not exist.\nCheck Internet Connection")
-    }
   }
 
   clearPara(queryDetected) {

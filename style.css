@@ -88,13 +88,13 @@ button:hover,
 #predBtn {
   position: relative;
   top: 50px;
-  left: -90px;
+  left: -55px;
   width: 250px;
 }
 
 header {
   height: 152px;
-  padding: 0 10%;
+  padding: 0 5%;
   background-color: rgb(225, 242, 236);
   color: rgb(80, 65, 182);
   border-bottom: solid rgb(80, 65, 182) 5px;
@@ -141,7 +141,9 @@ header {
   display: flex !important;
   flex-flow: row wrap !important;
   justify-content: flex-end !important;
-  width: 85% !important;
+  width: 850px !important;
+  height: 255px;
+  overflow: scroll;
 }
 
 #video {
@@ -246,7 +248,7 @@ h1 .subtext {
   width: 240px;
   float: left;
   margin-top: 20px;
-  margin-left: 25%;
+  margin-left: 18%;
   border: 5px solid rgb(40, 40, 196);
   padding: 20px;
   border-radius: 35px;
