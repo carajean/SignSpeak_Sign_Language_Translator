@@ -36,10 +36,12 @@ class Main {
     this.right = document.getElementById('split-right');
     this.left = document.getElementById('split-left');
     this.main = document.getElementById('main');
+    this.status = document.getElementById('status');
     this.statusText = document.getElementById('status-text');
     this.signPhrase = document.getElementById('signPhrase');
 
-    this.video.style.display = 'none';
+    this.right.style.display = 'inline';
+    this.video.style.display = 'inline';
     this.video.addEventListener('mousedown', () => {
       // click on video to go back to training buttons
       main.pausePredicting();
@@ -56,7 +58,7 @@ class Main {
 
       if (word && !words.includes(word)) {
         words.splice(words.length - 2, 0, word); // before endWord
-        this.createButtonList(false);
+        this.createButtonList(true);
         document.getElementById('new-word').value = '';
       } else {
         alert('Duplicate word or no word entered');
@@ -65,8 +67,6 @@ class Main {
 
     this.updateExampleCount();
     document.getElementById('status').style.display = 'none';
-    this.createTrainingBtn();
-    this.createButtonList(false);
 
     // load text to speech
     this.tts = new TextToSpeech();
@@ -82,17 +82,8 @@ class Main {
     div.appendChild(trainButton);
 
     trainButton.addEventListener('click', () => {
-      this.main.style.width = '60%';
-      this.video.style.display = 'inline';
-      this.right.style.display = 'inline';
       this.textLine.classList.add('addSignBtn');
-      this.textLine.innerText = 'Train Signs';
-      this.addWordForm.style.display = 'none';
-
       this.createButtonList(true);
-      this.startWebcam();
-      this.loadKNN();
-      this.createPredictBtn();
 
       console.log('ready to train');
     });
@@ -138,7 +129,7 @@ class Main {
 
   updateExampleCount() {
     let p = document.getElementById('count');
-    p.innerText = `Training: ${words.length} words`;
+    p.innerText = `Training: ${words.length} words/phrases`;
   }
 
   createButtonList(showBtn) {
@@ -174,18 +165,29 @@ class Main {
     div.appendChild(wordText);
 
     if (showBtn) {
-      // Create training button
-      this.exampleListDiv.classList.add('wordListWithBtns');
-      const button = document.createElement('button');
-      button.classList.add('trainingBtns');
-      button.classList.add('addExBtns');
-      button.style.margin = '0 5px';
-      button.innerText = 'Add Example';
-      div.appendChild(button);
+      // Create start training button
+      this.exampleListDiv.id = 'wordListWithBtns';
+      const buttonStart = document.createElement('button');
+      buttonStart.classList.add('trainingBtns');
+      buttonStart.classList.add('addExBtns');
+      buttonStart.style.margin = '0 5px';
+      buttonStart.innerText = 'Start Training';
+      div.appendChild(buttonStart);
 
       // Listen for mouse events when clicking the button
-      button.addEventListener('mousedown', () => (this.training = i));
-      button.addEventListener('mouseup', () => (this.training = -1));
+      buttonStart.addEventListener('click', () => (this.training = i));
+
+      // Create training button
+      const buttonStop = document.createElement('button');
+      buttonStop.classList.add('trainingBtns');
+      buttonStop.classList.add('addExBtns');
+      buttonStop.classList.add('trainingStopBtn');
+      buttonStop.style.margin = '0 5px';
+      buttonStop.innerText = 'Stop Training';
+      div.appendChild(buttonStop);
+
+      // Listen for mouse events when clicking the button
+      buttonStop.addEventListener('click', () => (this.training = -1));
 
       // Create clear button to emove training examples
       const btn = document.createElement('button');
@@ -263,14 +265,19 @@ class Main {
     predButton.innerText = 'Start Conversation!';
     div.appendChild(predButton);
 
-    predButton.addEventListener('mousedown', () => {
-      console.log('start predicting');
+    predButton.addEventListener('click', () => {
       const exampleCount = this.knn.getClassExampleCount();
-
       // check if training has been done
       if (Math.max(...exampleCount) > 0) {
-        if (exampleCount.some(e => e === 0)) {
-          alert(`More training please!`);
+        if (
+          exampleCount.some(e => e === 0) ||
+          exampleCount.every(e => e === 0)
+        ) {
+          this.setStatusText('Train more!');
+          setInterval(function() {
+            main.unsetStatusText();
+          }, 2000);
+          clearInterval();
           return;
         }
         this.trainingListDiv.style.display = 'none';
@@ -334,6 +341,10 @@ class Main {
     }
     this.pred = requestAnimationFrame(this.predict.bind(this));
   }
+  unsetStatusText() {
+    this.statusText.innerText = '';
+    this.status.style.display = 'none';
+  }
   setStatusText(status) {
     document.getElementById('status').style.display = 'block';
     this.statusText.innerText = status;
@@ -382,7 +393,7 @@ class TextToSpeech {
   }
 
   clearPara(queryDetected) {
-    this.signPhrase.innerText = '';
+    this.signPhrase.style.display = 'none';
     this.ansText.innerText = '';
     if (queryDetected) {
       this.loader.style.display = 'block';
@@ -549,4 +560,9 @@ let main = null;
 
 window.addEventListener('load', () => {
   main = new Main();
+  main.loadKNN();
+  main.startWebcam();
+  main.createTrainingBtn();
+  main.createButtonList(true);
+  main.createPredictBtn();
 });
