@@ -33,6 +33,7 @@ class Main {
     this.textLine = document.getElementById('text');
     this.video = document.getElementById('video');
     this.addWordForm = document.getElementById('add-word');
+    this.count = document.getElementById('count');
     this.right = document.getElementById('split-right');
     this.left = document.getElementById('split-left');
     this.main = document.getElementById('main');
@@ -149,7 +150,8 @@ class Main {
     this.exampleListDiv.appendChild(div);
 
     // Create Word Text
-    const wordText = document.createElement('span');
+    const wordText = document.createElement('p');
+    wordText.classList.add('wordText');
     if (i === 0 && !showBtn) {
       wordText.innerText = words[i].toUpperCase() + ' (ready to sign) ';
     } else if (i === words.length - 2 && !showBtn) {
@@ -200,12 +202,13 @@ class Main {
       btn.addEventListener('mousedown', () => {
         console.log(`cleared training data for: ${words[i]}`);
         this.knn.clearClass(i);
-        this.infoTexts[i].innerText = ' 0 examples';
+        this.infoTexts[i].innerText = '0 examples';
       });
 
       // Create info text
-      const infoText = document.createElement('span');
-      infoText.innerText = ' 0 examples';
+      const infoText = document.createElement('p');
+      infoText.classList.add('numExamples');
+      infoText.innerText = '0 examples';
       infoText.style.margin = '0 5px';
       div.appendChild(infoText);
       this.infoTexts.push(infoText);
@@ -249,7 +252,7 @@ class Main {
       if (Math.max(...exampleCount) > 0) {
         for (let i = 0; i < words.length; i++) {
           if (exampleCount[i] > 0) {
-            this.infoTexts[i].innerText = ` ${exampleCount[i]} examples`;
+            this.infoTexts[i].innerText = `${exampleCount[i]} examples`;
           }
         }
       }
@@ -266,6 +269,7 @@ class Main {
     div.appendChild(predButton);
 
     predButton.addEventListener('click', () => {
+      this.count.style.display = 'none';
       const exampleCount = this.knn.getClassExampleCount();
       // check if training has been done
       if (Math.max(...exampleCount) > 0) {

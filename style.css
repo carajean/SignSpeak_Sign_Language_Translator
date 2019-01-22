@@ -25,6 +25,11 @@ button,
   transition: 0.8s;
 }
 
+#count {
+  margin: 5px;
+  margin-bottom: 30px;
+}
+
 .trainingBtns {
   padding: 5px;
   font-size: 14pt;
@@ -36,6 +41,18 @@ button,
 
 .trainingStopBtn:hover {
   background-color: rgba(61, 33, 126, 0.968);
+}
+
+.wordText {
+  float: left;
+  margin: 0;
+  padding-right: 20px;
+}
+
+.numExamples {
+  float: right;
+  margin: 0;
+  width: 160px !important;
 }
 
 .addExBtns {
@@ -54,7 +71,8 @@ button,
 #text {
   color: white;
   font-size: 40pt;
-  margin: 12px;
+  margin: 0;
+  margin-top: 12px;
 }
 
 .trainBtn,
@@ -70,7 +88,7 @@ button:hover,
 #predBtn {
   position: relative;
   top: 50px;
-  left: -80px;
+  left: -90px;
   width: 250px;
 }
 
@@ -122,7 +140,7 @@ header {
   display: flex !important;
   flex-flow: row wrap !important;
   justify-content: flex-end !important;
-  width: 80% !important;
+  width: 85% !important;
 }
 
 #video {
@@ -227,7 +245,7 @@ h1 .subtext {
   width: 240px;
   float: left;
   margin-top: 20px;
-  margin-left: 22%;
+  margin-left: 25%;
   border: 5px solid rgb(40, 40, 196);
   padding: 20px;
   border-radius: 35px;
