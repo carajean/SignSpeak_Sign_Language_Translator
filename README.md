@@ -1,41 +1,28 @@
-# Making Alexa respond to Sign Language using Tensorflow.js
+# Carolyn's Stackathon Project
 
-![Alt Text](https://i.imgur.com/CbvRZIY.gif)
+My original plan for this project was to build upon Shekit's work of making a sign language-voice translator. I wanted to enable model saving & loading functionality, so the user doesn't have to train the words from scratch if they refresh the page or navigate away.
 
-**[Try the live demo](https://shekit.github.io/alexa-sign-language-translator/)**
+Here is an open-source American Sign Language database that I was unable to integrate into this project: http://www-i6.informatik.rwth-aachen.de/~dreuw/database-rwth-boston-50.php
 
-**[Read the Blog Post on Tensorflow's Blog]() Coming Soon**
+I am new to TensorFlow & machine learning, so deciphering the database's python scripts was beyond me in the scope of this short project. I learned that in TensorFlow.js, not all models share functionality (ie, KNNImageClassifier cannot load/save). I attempted several workarounds but was unsuccessful.
 
-**[Watch the video](https://www.youtube.com/watch?v=kS53y6GWm0w)**
+Moving forward, I would love to switch to a newer tfjs model that has load/save capabilities. I would like to add fingerspelling functions, such that the concatenated word is spoken rather than individual letters. I would like this to be deployed as a mobile app for use in the real world. Finally, it would be interesting to incorporate American Sign Language grammar translation, rather than assuming Signed English.
 
-This project has been shared extensively across [social media](https://twitter.com/shekitup/status/1017072947624857605), and covered in the press: [BBC](https://www.bbc.com/news/technology-44891054), [Verge](https://www.theverge.com/2018/7/24/17606614/amazon-alexa-echo-mod-sign-language-gestures-ai), [Mashable](https://mashable.com/video/amazon-alexa-sign-language/), [Fast Co](https://www.fastcompany.com/90202730/this-clever-app-lets-amazon-alexa-read-sign-language), [Kottke](https://kottke.org/18/07/making-amazon-alexa-respond-to-sign-language-using-ai), [VentureBeat](https://venturebeat.com/2018/07/24/amazon-alexa-mod-turns-sign-language-into-voice-commands/), [NowThis](https://www.facebook.com/NowThisFuture/videos/alexa-can-now-understand-sign/2221206704587164/) and others  
+## To run the code:
 
-Run the demo in latest Chrome/Firefox to train the model using your own words and corresponding signs/gestures. If you have an Echo plugged in closeby, it should respond, otherwise simply play around and have fun. You will need to give permission to access your webcam and microphone.
+- fork/clone repo
+- cd into project folder
+- open terminal and run the following:
+  `npm install`
+  `npm start`
+- open localhost:9966 in browser
+- enjoy!
 
+## Credit
 
-## Running the code
-To use the code, first install the JavaScript dependencies by running  
-
-```
-npm install
-```
-
-Then start the local budo web server by running 
-
-```
-npm start
-```
-
-This will start a web server on [`localhost:9966`](http://localhost:9966). 
-
-1. Allow permission to your webcam and microphone. 
-
-2. Add some words you want to train on. 
-
-![Alt Text](https://i.imgur.com/zk3kwIZ.gif)
+Based in part on https://github.com/shekit/alexa-sign-language-translator.git
+and https://github.com/googlecreativelab/teachable-machine.git
 
 ## Reference
-To learn more about the classifier used in this repo go to [KNN Image Classifier](https://github.com/PAIR-code/deeplearnjs/tree/master/models/knn_image_classifier)
 
-There is a newer version of this classifier released in the new [tensorflow.js](https://js.tensorflow.org) which can be found [here](https://github.com/tensorflow/tfjs-models/tree/master/knn-classifier)
-
+Learn more about TensorFlow.js here https://github.com/googlecreativelab/teachable-machine.git
