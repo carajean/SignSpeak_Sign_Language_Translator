@@ -271,20 +271,16 @@ class Main {
     div.appendChild(predButton);
 
     predButton.addEventListener('click', () => {
-      this.count.style.display = 'none';
       const exampleCount = this.knn.getClassExampleCount();
       // check if training has been done
-      if (Math.max(...exampleCount) > 0) {
-        if (
-          exampleCount.some(e => e === 0) ||
-          exampleCount.every(e => e === 0)
-        ) {
-          this.setStatusText('Train more!');
-          setInterval(function() {
-            main.unsetStatusText();
-          }, 2000);
-          return;
-        }
+      if (exampleCount.some(e => e === 0) || exampleCount.every(e => e === 0)) {
+        this.setStatusText('Train more!');
+        setInterval(function() {
+          main.unsetStatusText();
+        }, 2000);
+        return;
+      } else {
+        this.count.style.display = 'none';
         this.trainingListDiv.style.display = 'none';
         this.startPredicting();
       }
