@@ -20,26 +20,27 @@
   <div id="status">
     <p id="status-text">Status: Not Ready</p>
   </div>
-  <video id="video" src='' muted autoplay playsinline></video>
-  <div class="split-left">
-    <div class="centered">
-      <h1 id="text" class="intro-steps">Choose Signs</h1>
-      <div id="training-list">
-        <div id="example-list"></div>
-        <div id="add">
-          <form id="add-word" autocomplete="off">
-            <input type="text" id="new-word" placeholder="Add Training word">
-            <br/><br/>
-            <input type="submit" value="Add Word">
-          </form>
-        </div>
-        <p id="count">Training: 2 words</p>
-        <div id="action-btn"></div>
-      </div>
-      
+  <div id="main">
+    <h1 id="text" class="intro-steps">Choose Signs</h1>
+    <div id="training-list">
+      <div id="example-list"></div>
+      <div id="add">
+        <form id="add-word" autocomplete="off">
+          <input type="text" id="new-word" placeholder="New sign to train">
+          <br/><br/>            
+          <input type="submit" value="Add Sign" id="addWordBtn">
+        </form>
+      </div>        
+      <p id="count"></p>
+      <div id="action-btn"></div>     
     </div>
   </div>
-  <div class="split-right">
+  <div id="split=left" style="display:none">
+
+
+  </div>
+  <div id="split-right" style="display:none">
+    <video id="video" src='' muted autoplay playsinline></video>
     <div class="centered">
       <div id="loader"></div>
       <h1>

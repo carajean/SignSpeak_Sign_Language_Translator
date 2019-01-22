@@ -4,8 +4,61 @@ body {
   padding: 0;
 }
 
+p,
+span,
+button,
+input {
+  font-size: 18pt;
+  color: rgb(0, 0, 96);
+}
+
+button,
+#addWordBtn {
+  background-color: rgb(11, 103, 184);
+  color: white;
+  padding: 10px;
+  border-radius: 25px;
+  transition: 0.8s;
+}
+
+.trainingBtns {
+  padding: 5px;
+  font-size: 14pt;
+}
+
+.addExBtns {
+  width: 140px;
+}
+
+.clearBtns {
+  background-color: rgba(147, 84, 203, 0.968);
+  width: 70px;
+}
+
+.clearBtns:hover {
+  background-color: rgba(83, 33, 126, 0.968);
+}
+
+#text {
+  color: white;
+}
+
+.trainBtn,
+#addWordBtn {
+  width: 140px;
+}
+
+button:hover,
+#addWordBtn:hover {
+  background-color: rgb(0, 30, 150);
+}
+
+#predBtn {
+  width: 250px;
+}
+
 header {
-  height: 150px;
+  height: 152px;
   padding: 0 60px;
   background-color: rgb(225, 242, 236);
   color: rgb(80, 65, 182);
@@ -20,9 +73,39 @@ header {
   margin-right: 50px;
 }
 
-.split-left,
-.split-right {
-  margin-top: 155px;
+#split-left,
+#split-right,
+#main {
+  margin-top: 157px;
+}
+
+#example-list {
+  margin: 0 200px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: start;
+  height: 300px;
+}
+
+#listDiv {
+  margin: 0 100px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: start;
+  height: 300px;
+}
+
+.wordList {
+  width: 30%;
+  height: 4 0px;
+}
+
+.wordListWithBtns {
+  margin-left: 0px !important;
+  width: 650px;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
 }
 
 #video {
@@ -30,9 +113,11 @@ header {
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
-  position: absolute;
-  left: 32.5%;
-  top: 5%;
+  position: fixed;
+  right: 0.9%;
+  top: 12%;
+  height: 400px;
+  width: auto;
   z-index: 10;
   background-image: radial-gradient(
     circle,
@@ -44,28 +129,32 @@ header {
   border-radius: 5px;
 }
 
-.split-left {
+#split-left,
+#main {
   text-align: center;
   height: 100%;
   left: 0;
-  width: 39.75%;
+  width: 100%;
   position: fixed;
   z-index: 1;
   top: 0;
-  overflow-x: hidden;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-right: 5px solid rgb(80, 65, 182);
   background: rgb(153, 198, 182);
 }
 
-.split-left h1 {
+#split-left {
+  width: 70%;
+}
+
+#split-left h1 {
   color: white;
 }
 
-.split-right {
+#split-right {
   height: 100%;
-  width: 59.75%;
+  width: 40%;
+  border-left: 5px solid rgb(80, 65, 182);
   position: fixed;
   z-index: 1;
   top: 0;
@@ -112,27 +201,35 @@ h1 .subtext {
 }
 
 .intro-steps {
-  font-size: 30px;
+  font-size: 36px;
 }
 
 #add-word {
-  border: 1px solid #333;
-  padding: 10px;
-  font-size: 12px;
+  width: 20%;
+  float: left;
+  margin-left: 300px;
+  border: 3px solid rgb(80, 65, 182);
+  padding: 20px;
+  border-radius: 35px;
+  background-color: rgb(225, 242, 236);
 }
 
-/* If you want the content centered horizontally and vertically */
+input {
+  text-align: center;
+}
+
 .centered {
-  position: absolute;
-  top: 220px;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
   width: 75%;
+  margin: auto;
 }
 
 #info {
   margin-bottom: 30px;
+}
+
+#example-list {
+  text-align: left;
 }
 
 #loader,
@@ -171,19 +268,8 @@ h1 .subtext {
 #loader:after {
   left: 1.5em;
 }
+
 @-webkit-keyframes load1 {
-  0%,
-  80%,
-  100% {
-    box-shadow: 0 0;
-    height: 4em;
-  }
-  40% {
-    box-shadow: 0 -2em;
-    height: 5em;
-  }
-}
-@keyframes load1 {
   0%,
   80%,
   100% {
