@@ -113,6 +113,7 @@ header {
 #split-right,
 #main {
   margin-top: 157px;
+  overflow: scroll;
 }
 
 #example-list {

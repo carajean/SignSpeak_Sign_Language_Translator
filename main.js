@@ -43,8 +43,9 @@ class Main {
 
     this.right.style.display = 'inline';
     this.video.style.display = 'inline';
+
+    // click on video to go back to training buttons
     this.video.addEventListener('mousedown', () => {
-      // click on video to go back to training buttons
       main.pausePredicting();
       this.trainingListDiv.style.display = 'block';
     });
@@ -152,11 +153,11 @@ class Main {
     // Create Word Text
     const wordText = document.createElement('p');
     wordText.classList.add('wordText');
-    if (i === 0 && !showBtn) {
+    if (i === 0) {
       wordText.innerText = words[i].toUpperCase() + ' (ready to sign) ';
-    } else if (i === words.length - 2 && !showBtn) {
+    } else if (i === words.length - 2) {
       wordText.innerText = words[i].toUpperCase() + ' (done signing) ';
-    } else if (i === words.length - 1 && !showBtn) {
+    } else if (i === words.length - 1) {
       wordText.innerText = words[i].toUpperCase() + ' (neutral) ';
     } else {
       wordText.innerText = words[i].toUpperCase() + ' ';
@@ -227,8 +228,7 @@ class Main {
           console.log('waiting to train');
         })
         .catch(error => {
-          if (error) console.error(error);
-          else console.log('stopped training');
+          console.error('error in training: ', error);
         });
     }
     this.timer = requestAnimationFrame(this.train.bind(this));
@@ -281,11 +281,9 @@ class Main {
           setInterval(function() {
             main.unsetStatusText();
           }, 2000);
-          clearInterval();
           return;
         }
         this.trainingListDiv.style.display = 'none';
-        this.textLine.classList.remove('intro-steps');
         this.startPredicting();
       }
     });
@@ -371,7 +369,7 @@ class TextToSpeech {
     this.selectedVoice = 48; // this is Google-US en. Can set voice and language of choice
 
     this.currentPredictedWords = [];
-    this.waitTimeForQuery = 3000;
+    this.waitTimeForQuery = 5000;
 
     this.synth.onvoiceschanged = () => {
       this.populateVoiceList();
@@ -397,7 +395,7 @@ class TextToSpeech {
   }
 
   clearPara(queryDetected) {
-    this.signPhrase.style.display = 'none';
+    this.signPhrase.innerText = '';
     this.ansText.innerText = '';
     if (queryDetected) {
       this.loader.style.display = 'block';
@@ -412,7 +410,7 @@ class TextToSpeech {
 
   speak(word) {
     if (word === 'ready') {
-      console.log('clear para');
+      console.log('ready for new phrase');
       this.clearPara(true);
 
       setTimeout(() => {
